@@ -1,5 +1,5 @@
 <?php
-include("???.php");
+require_once("???.php");
 class Contact extends Mysql 
 {
 	// Attributs de la classe
