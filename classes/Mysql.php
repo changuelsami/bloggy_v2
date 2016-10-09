@@ -14,19 +14,24 @@ class Mysql
 	
 	public function __construct()
 	{
-
-		$this->_cnx = new mysqli($this->_serveur, $this->_login, $this->_mdp, $this->_bdd);
-		if ( $this->_cnx->connect_error ) {
-		    die('Erreur de connexion ' . $this->_cnx->connect_error);
+		try {
+		    $this->_cnx = new PDO('mysql:host=localhost;dbname=bloggy_v1', 
+		    						$this->_login, $this->_mdp);
+		} catch (PDOException $e) {
+		    exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");
 		}
 	}
 	
 	public function requete($q)
 	{
-		$res = $this->_cnx->multi_query($q); //comme query() mais permet d'exécuter plusieurs requêtes séparées par ;
-		if (!$res)
-			exit("<pre>Erreur dans la requete [$q] : " . $this->_cnx->error . "</pre>");
-		return $res;
+		try {
+			$res = $this->_cnx->query($q);
+			return $res;
+		}
+		catch (PDOException $e){
+			exit("<pre>Erreur dans la requete [$q] : " . $e->getMessage() . "</pre>");
+
+		}
 	}
 }
 
