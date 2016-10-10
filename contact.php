@@ -18,7 +18,7 @@
 					}
 					?>
 
-					 <form class="form-horizontal" action="contact_action2.php" method="post">
+					 <form class="form-horizontal" action="contact_action.php" method="post">
 					  <div class="form-group has-feedback">
 					    <label class="control-label col-sm-2" for="email" >E-mail *:</label>
 					    <div class="col-sm-10"><input type="email" class="form-control" id="email" name="email" required="required"> 
