@@ -1,78 +1,84 @@
 <?php
-require_once("???.php");
+include("Mysql.php");
 class Contact extends Mysql 
 {
 	// Attributs de la classe
 	private $_id;
 	private $_email;
-	private ???;
-	private ???;
-	private ???;
+	private $_sujet;
+	private $_message;
+	private $_newsletter;
 	private $_d_ajout;
 
-	// Setters
-	public function set_id($id) {
-		$this->_id = $id;
-	}
+	// Méthode magique pour les setters & getters
+	public function __get($property) {
+		if (property_exists($this, $property)) {
+                return htmlentities( $this->$property );
+            }
+    }
 
-	public function set_email($email) {
-		$this->_email = $email;
-	}
+    public function __set($property, $value) {
+        if (property_exists($this, $property)) {
+        	if ($property == "_newsletter")
+        		$this->$property = (empty($value)) ? 0 : 1;
+        	else
+            	$this->$property = $value;
+        }
+    }
 
-	public function set_sujet($sujet) {
-		???
-	}
-
-	public function set_newsletter($newsletter) {
-		???
-	}
-
-	public function ??? {
-		???
-	}
-
-	// Getters
-	public function get_id() {
-		return $this->_id;
-	}
-
-	??? function get_email() {
-		???
-	}
-
-	public ??? get_sujet() {
-		???
-	}
-
-	??? ??? get_message() {
-		???
-	}
-  
-	public function ??? {
-		???
-	}
 
 	// Autres méthodes
 	public function ajouter()
 	{
-	    //print_r(get_object_vars($this));
+	    try {
 	    if (!isset($this->_email) || 
-	    	!isset(???) || 
-	    	!???(???)     	)
+	    	!isset($this->_sujet) || 
+	    	!isset($this->_message)
+	    	)
 	    	return false;
-	    $q = "INSERT INTO contact(id, email, sujet, message, newsletter, d_ajout) VALUES 
-	  		(  null				  , '$this->_email'	,
-			  ???	  , ???	,
-			  ???  , NOW()
-			)";		
-		$res = $this->requete($q);
+	    $q = "INSERT INTO contact(id, email, sujet, message, newsletter, d_ajout) 
+	    	  VALUES (null, :email, :sujet, :message,:newsletter, NOW())";
+		$stmt = $this->get_cnx()->prepare($q);
 
-		return mysqli_insert_id($this->get_cnx());	// Renvoi l'id de l'enregistrement ajouté		
+		$stmt->bindParam(':email', $this->_email);
+		$stmt->bindParam(':sujet', $this->_sujet);
+		$stmt->bindParam(':message', $this->_message);
+		$stmt->bindParam(':newsletter', $this->_newsletter);
+
+		$stmt->execute();
+
+		return $this->get_cnx()->lastInsertId;
+		} catch (PDOException $e) {
+		    exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");
+		}
+
 	}
 	
-	public function ???(){
-		$q = "DELETE FROM contact WHERE id = '$this->_id'";
-		$res = $this->requete($q);
-		return $res;
+	public function supprimer()
+	{
+		$q = "DELETE FROM contact WHERE id = :id";
+		$stmt = $this->get_cnx()->prepare($q);
+		$stmt->bindParam(':id', $this->_id);
+		return ($stmt->execute() == true);
 	}
+
+	public function liste()
+	{
+		$q = "SELECT * FROM contact ORDER BY d_ajout DESC";
+		$liste = array(); // Tableau VIDE
+		$res = $this->get_cnx()->query($q);
+		foreach ($res as $row)
+		{
+			$c = new Contact();
+
+			$c->_id 	 = $row['id'];
+			$c->_sujet 	 = $row['sujet'];
+			$c->_email 	 = $row['email'];
+			$c->_d_ajout = $row['d_ajout'];
+		
+			$liste[]=$c;
+		}
+		
+		return $liste; // Renvoi un tableau d'objets
+	}	
 }
