@@ -5,7 +5,7 @@
 	$message 	= $_POST['message'];
 	$newsletter = $_POST['newsletter']; // peut générer une alerte si pas cochée ! c'est normal, faut ajouter un truc au début de la ligne
 
-	require_once("./classes/Contact_OK2.php");
+	require_once("./classes/Contact.php");
 	$contact = new Contact();
 	$contact->_email = $email;
 	$contact->_sujet = $sujet;
