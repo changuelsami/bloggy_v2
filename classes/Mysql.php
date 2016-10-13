@@ -15,7 +15,7 @@ class Mysql
 	public function __construct()
 	{
 		try {
-		    $this->_cnx = new PDO('mysql:host=localhost;dbname=bloggy_v1', 
+		    $this->_cnx = new PDO("mysql:host=".$this->_serveur.";dbname=" . $this->_bdd, 
 		    						$this->_login, $this->_mdp);
 		} catch (PDOException $e) {
 		    exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");

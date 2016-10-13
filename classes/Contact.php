@@ -47,7 +47,7 @@ class Contact extends Mysql
 
 		$stmt->execute();
 
-		return $this->get_cnx()->lastInsertId;
+		return $this->get_cnx()->lastInsertId();
 		} catch (PDOException $e) {
 		    exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");
 		}
