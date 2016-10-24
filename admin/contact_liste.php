@@ -20,37 +20,25 @@
 						</thead>
 						<!-- Début de la liste -->
 						<tbody>
-							<!-- ** Début de la boucle sur le résultat de la requête SQL ** -->
+							<?php
+							require_once("../classes/Contact_OK2.php");
+							$c = new Contact();
+							$liste = $c->liste();
+							foreach ($liste as $contact) {
+							?>
 							<tr>
-								<td>5</td>
-								<td>john@doo.tn</td>
-								<td>Votre blog est top !</td>
-								<td>08/10/2016</td>
+								<td><?php echo $contact->_id; ?></td>
+								<td><?php echo $contact->_email; ?></td>
+								<td><?php echo $contact->_sujet; ?></td>
+								<td><?php echo $contact->_d_ajout; ?></td>
 								<td>
-									<a href="#" class="btn btn-danger btn-xs">Suprimer</a>
+									<a href="contact_supprimer_action.php?id=<?php echo $contact->_id; ?>" 
+									   onclick="return supprimer()" class="btn btn-danger btn-xs">Suprimer</a>
 								</td>
 							</tr>
-							<!-- ** Fin de la boucle ** -->
-
-							<!-- ** Supprimer les 2 lignes (TR) ci-dessous ** -->
-							<tr>
-								<td>3</td>
-								<td>jean@dupond.tn</td>
-								<td>Petite question</td>
-								<td>07/10/2016</td>
-								<td>
-									<a href="#" class="btn btn-danger btn-xs">Suprimer</a>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>jack@foo.tn</td>
-								<td>Comment t'aa fait ??</td>
-								<td>05/10/2016</td>
-								<td>
-									<a href="#" class="btn btn-danger btn-xs">Suprimer</a>
-								</td>
-							</tr>
+							<?php 
+							} // foreach
+							?>
 
 						</tbody>
 						<!-- Fin de la liste -->

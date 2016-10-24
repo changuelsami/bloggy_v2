@@ -17,5 +17,10 @@
 	else
 		$retour = -1;
 
-	header("Location: contact.php?retour=$retour&sujet=$sujet");
+	//print("Location: contact.php?retour=$retour&sujet=$sujet");
+	/*$a["retour"] = $retour;
+	$a["sujet"] = $sujet;*/
+	$a = array("retour" => $retour, "sujet" => $sujet);
+	header('Content-Type: application/json');
+	print json_encode($a);
 

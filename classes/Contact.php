@@ -12,53 +12,55 @@ class Contact extends Mysql
 
 	// Méthode magique pour les setters & getters
 	public function __get($property) {
-		if (property_exists($this, $property)) {
-                return htmlentities( $this->$property );
-            }
-    }
+		if (property_exists($this, $property))
+			return htmlentities( $this->$property );
+		else
+			exit("Erreur dans la calsse " . __CLASS__ . " : l'attribut $property n'existe pas!")
+	}
 
-    public function __set($property, $value) {
-        if (property_exists($this, $property)) {
-        	if ($property == "_newsletter")
-        		$this->$property = (empty($value)) ? 0 : 1;
-        	else
-            	$this->$property = $value;
-        }
-    }
+	public function __set($property, $value) {
+		if (property_exists($this, $property)) {
+			if ($property == "_newsletter")
+				$this->$property = (empty($value)) ? 0 : 1;
+			else
+				$this->$property = $value;
+		}
+		else
+			exit("Erreur dans la calsse " . __CLASS__ . " : l'attribut $property n'existe pas!")
+	}
 
 
 	// Autres méthodes
 	public function ajouter()
 	{
-	    try {
-	    if (!isset($this->_email) || 
-	    	!isset($this->_sujet) || 
-	    	!isset($this->_message)
-	    	)
-	    	return false;
-	    $q = "INSERT INTO contact(id, email, sujet, message, newsletter, d_ajout) 
-	    	  VALUES (null, :email, :sujet, :message,:newsletter, NOW())";
-		$stmt = $this->get_cnx()->prepare($q);
+		try {
 
-		$stmt->bindParam(':email', $this->_email);
-		$stmt->bindParam(':sujet', $this->_sujet);
-		$stmt->bindParam(':message', $this->_message);
-		$stmt->bindParam(':newsletter', $this->_newsletter);
+			$q = "INSERT INTO contact(id, email, sujet, message, newsletter, d_ajout) 
+			VALUES (null, :email, :sujet, :message,:newsletter, NOW())";
+			$stmt = $this->get_cnx()->prepare($q);
 
-		$stmt->execute();
+			$stmt->bindParam(':email', $this->_email);
+			$stmt->bindParam(':sujet', $this->_sujet);
+			$stmt->bindParam(':message', $this->_message);
+			$stmt->bindParam(':newsletter', $this->_newsletter);
 
-		return $this->get_cnx()->lastInsertId();
+			if (!$stmt->execute()) {
+				$stmt->debugDumpParams();
+				exit();
+			}
+
+			return $this->get_cnx()->lastInsertId();
 		} catch (PDOException $e) {
-		    exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");
+			exit("<pre>Erreur de connexion à la BdD : " . $e->getMessage() . "<br/>");
 		}
 
 	}
 	
-	public function supprimer()
+	public function supprimer($id)
 	{
 		$q = "DELETE FROM contact WHERE id = :id";
 		$stmt = $this->get_cnx()->prepare($q);
-		$stmt->bindParam(':id', $this->_id);
+		$stmt->bindParam(':id', $id);
 		return ($stmt->execute() == true);
 	}
 
@@ -74,8 +76,10 @@ class Contact extends Mysql
 			$c->_id 	 = $row['id'];
 			$c->_sujet 	 = $row['sujet'];
 			$c->_email 	 = $row['email'];
+			$c->_newsletter 	 = $row['newsletter'];
+			$c->_message 	 = $row['message'];
 			$c->_d_ajout = $row['d_ajout'];
-		
+
 			$liste[]=$c;
 		}
 		

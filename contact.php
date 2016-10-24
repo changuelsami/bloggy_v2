@@ -7,16 +7,10 @@
     			<div class="col-md-9" id="content_text">
 					<h1>Contactez moi</h1>
 
-					<?php
-					if (isset($_GET['retour']))
-					{
-						?>
-						<div class="alert alert-success">
-						  Merci. Votre message intitulé "<?php echo $_GET['sujet'] ?>" a bien été enregistrée.
-						</div>
-						<?php
-					}
-					?>
+
+					<div class="alert alert-success" id="notif">
+					</div>
+
 
 					 <form class="form-horizontal" action="contact_action.php" method="post">
 					  <div class="form-group has-feedback">
@@ -53,3 +47,4 @@
 
 
 <?php require_once("footer.inc.php"); ?>
+<script src="js/bloggy.js"></script>

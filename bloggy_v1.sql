@@ -2,13 +2,11 @@
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
-SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` int(11) NOT NULL,
+  `titre` varchar(100) NOT NULL,
   `image` varchar(200) NOT NULL,
   `texte` text NOT NULL,
   `d_ajout` datetime NOT NULL,
@@ -19,13 +17,13 @@ CREATE TABLE `article` (
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE `contact` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `sujet` varchar(100) NOT NULL,
-  `message` text NOT NULL,
-  `newsletter` tinytext NOT NULL,
+  `email` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `sujet` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `message` text CHARACTER SET latin1 NOT NULL,
+  `newsletter` tinyint(4) NOT NULL,
   `d_ajout` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2016-10-18 20:01:00
+-- 2016-10-24 07:46:28

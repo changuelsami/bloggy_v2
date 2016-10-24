@@ -6,8 +6,10 @@
         <link rel="shortcut icon" href="favicon.ico" />
         <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"  />  
         <link type="text/css" rel="stylesheet" href="css/style.css"  />
+        <!--
         <link href='http://fonts.googleapis.com/css?family=Irish+Grover' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'/>
+        -->
     </head>
     <body>
         <div class="container">

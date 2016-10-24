@@ -24,6 +24,7 @@
 			<li><a href="index.php">Acceuil</a></li>
 			<li><a href="contact_liste.php">Contact</a></li>
 			<li><a href="article_liste.php">Articles</a></li>
+			<li><a href="#">Commentaires</a></li>
 
 		</ul>
 	</div>
